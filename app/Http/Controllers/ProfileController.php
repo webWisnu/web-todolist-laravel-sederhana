@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -26,35 +27,37 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        // Validasi data termasuk file
+        $validated = $request->validated();
 
+        // Update data user (misalnya nama, email, dll.)
+        $request->user()->fill($validated);
+
+        // Jika email diubah, reset status verifikasi email
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
+        // Cek apakah ada file foto yang diupload
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $filename = time() . '.' . $photo->getClientOriginalExtension();
+            $path = $photo->storeAs('uploads/photos', $filename, 'public'); // simpan di folder 'storage/app/public/uploads/photos'
+
+            // Hapus foto lama jika ada
+            if ($request->user()->photo) {
+                Storage::disk('public')->delete($request->user()->photo);
+            }
+
+            
+            $request->user()->photo = $path;
+        }
+
+
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        notify()->success('Berhasil Update Data');
+        return redirect()->route('profile.edit');
     }
 }

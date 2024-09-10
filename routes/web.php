@@ -4,6 +4,7 @@ use App\Http\Controllers\KirimEmailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/new-todo', [TodoController::class, 'store'])->name('create.todo');
     Route::put('/update-todo/{id}', [TodoController::class, 'update'])->name('update.todo');
     Route::delete('/delete-todo/{id}', [TodoController::class, 'destroy'])->name('todo.destroy');
+    Route::post('/profile', [ProfileController::class, 'upload'])->name('profile.upload');
 });
 
 

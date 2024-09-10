@@ -15,20 +15,28 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @notifyCss
-     <style>
-           .notify {
-    color: white; /* Warna teks */
-    padding: 20px 30px; /* Perbesar padding */
-    border-radius: 10px; /* Lebih melengkungkan sudut */
-    font-size: 1.2rem; /* Ukuran teks lebih besar */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Perbesar bayangan */
+    <style>
+        .notify {
+            color: white;
+            /* Warna teks */
+            padding: 20px 30px;
+            /* Perbesar padding */
+            border-radius: 10px;
+            /* Lebih melengkungkan sudut */
+            font-size: 1.2rem;
+            /* Ukuran teks lebih besar */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            /* Perbesar bayangan */
 
 
-    }
-        </style>
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased">
